@@ -44,7 +44,8 @@ const studentSchema = new mongoose.Schema(
     totalAmount: {
       type: Number,
       default: 0
-    }
+    },
+    updated: Date
   },
   { timestamps: true }
 );
