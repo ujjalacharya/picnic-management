@@ -41,6 +41,13 @@ export const isAuthenticated = () => {
   }
 };
 
+export const getUsername = () => {
+  if (typeof window !== "undefined") {
+    let { teacher } = JSON.parse(localStorage.getItem("jwt"));
+    return teacher.firstname;
+  }
+};
+
 export const signout = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("jwt");
