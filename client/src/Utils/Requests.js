@@ -54,3 +54,6 @@ export const signout = () => {
   }
   return true;
 };
+
+// Students
+export const getStudents = () => axios.get("/student");
