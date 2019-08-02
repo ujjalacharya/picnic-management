@@ -14,7 +14,8 @@ app.use(expressValidator());
 
 // Routes
 app.use("/api", require("./routes/auth"));
-app.use("/api", require("./routes/teacher"));
+app.use("/api/teacher", require("./routes/teacher"));
+app.use("/api/student", require("./routes/student"));
 
 // Error handling middleware
 app.use(function(err, req, res, next) {
