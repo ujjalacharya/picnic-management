@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import Layout from "../../core/Layout";
 import Form from "./Form";
 import { Redirect } from "react-router-dom";
+import { signIn, authenticate } from "../../../Utils/Requests";
 
 const SignIn = () => {
   const [state, setState] = useState({
-    email: "acharyaujjal1@gmail.com",
-    password: "123456",
+    email: "hari@hotmail.com",
+    password: "123456789",
     error: "",
     loading: false,
     redirectToReferrer: false
@@ -24,7 +25,18 @@ const SignIn = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log(state);
+    setState({ ...state, error: false, loading: true });
+    const data = await signIn({ email, password }).catch(err => {
+      setState({ ...state, error: err.response.data.error });
+    });
+    if (data && data.status === 200) {
+      authenticate(data, () => {
+        setState({
+          ...state,
+          redirectToReferrer: true
+        });
+      });
+    }
   };
 
   const showError = () => <div className="alert alert-danger">{error}</div>;

@@ -51,7 +51,7 @@ const Menu = ({ history }) => {
                 className="nav-link"
                 style={{ cursor: "pointer", color: "#ffffff" }}
                 onClick={async () => {
-                  const result = await signout().catch(err => console.log(err));
+                  const result = signout();
                   if (result) {
                     history.push("/");
                   }

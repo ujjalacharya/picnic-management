@@ -1,6 +1,19 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import setAuthToken from "./setAuthToken";
 const JWT_SECRET = process.env.REACT_APP_JWT_SECRET;
+
+export const signUp = user => axios.post("/signup", user);
+
+export const signIn = user => axios.post("/signin", user);
+
+export const authenticate = (data, next) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("jwt", JSON.stringify(data.data));
+    setAuthToken(isAuthenticated().token);
+    next();
+  }
+};
 
 export const isAuthenticated = () => {
   if (typeof window == "undefined") {
@@ -31,7 +44,6 @@ export const isAuthenticated = () => {
 export const signout = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("jwt");
-
-    return axios.get("/signout");
   }
+  return true;
 };
