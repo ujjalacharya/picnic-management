@@ -57,3 +57,6 @@ export const signout = () => {
 
 // Students
 export const getStudents = () => axios.get("/student");
+
+export const addNewStudent = student => axios.post("/student", student);
+

@@ -1,18 +1,18 @@
-import React from 'react';
-import { MDBDataTable } from 'mdbreact';
+import React from "react";
+import { Link } from "react-router-dom";
+import { MDBDataTable } from "mdbreact";
 
-const Datatable = ({data}) => {
-
- console.log(data)
+const Datatable = ({ data }) => {
+  console.log(data);
 
   return (
-    <MDBDataTable
-      striped
-      bordered
-      hover
-      data={data}
-    />
+    <>
+      <button className="btn btn-info mb-4">
+        <Link to="/new-student">Add New Student</Link>
+      </button>
+      <MDBDataTable striped bordered hover data={data} />
+    </>
   );
-}
+};
 
 export default Datatable;

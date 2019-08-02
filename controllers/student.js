@@ -16,7 +16,7 @@ exports.studentById = async (req, res, next, id) => {
 };
 
 exports.getAllStudents = async (req, res) => {
-  const students = await Student.find().select("name class email");
+  const students = await Student.find().select("name grade email");
   if (students) {
     res.json(students);
   } else {
