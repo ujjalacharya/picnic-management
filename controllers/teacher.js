@@ -28,7 +28,7 @@ exports.signin = async (req, res) => {
   }
 
   const payload = {
-    id: teacher.id
+    _id: teacher.id
   };
 
   const token = jwt.sign(
@@ -40,3 +40,32 @@ exports.signin = async (req, res) => {
   const { _id, email: mail, firstname } = teacher;
   return res.json({ token, teacher: { _id, mail, firstname } });
 };
+
+exports.requireSignin = async (req, res, next) => {
+ const token = req.headers.authorization;
+
+ if (token) {
+   const teacher = parseToken(token);
+
+   console.log(teacher)
+
+   const foundteacher = await Teacher.findById(teacher._id).select("firstname");
+
+   if (foundteacher) {
+     req.auth = foundteacher;
+     next();
+   } else res.status(401).json({ error: "Not authorized!" });
+ } else {
+   res.status(401).json({ error: "Not authorized" });
+ }
+};
+
+function parseToken(token) {
+ try {
+   // For cookie
+   //   jwt.verify(token.split(";")[1].split("=")[1], process.env.JWT_SECRET)
+   return jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
+ } catch (err) {
+   return Error({ error: err.message });
+ }
+}
