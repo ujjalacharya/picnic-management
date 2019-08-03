@@ -7,9 +7,10 @@ import Griddle, {
   ColumnDefinition
 } from "griddle-react";
 import { removeStudent } from "../../../Utils/Requests";
+import { CSVLink } from "react-csv";
 
 const Datatable = ({ datas, history }) => {
-  let [checkboxId, setCheckboxId] = useState([]);
+  const [checked, setCheked] = useState([]);
   console.log(datas);
 
   let data = [];
@@ -25,14 +26,14 @@ const Datatable = ({ datas, history }) => {
     data.push(element);
   });
 
-  console.log(data);
+  console.table(data);
 
   const imageComponent = e => (
     <div>
       <img
         src={`${process.env.REACT_APP_API_URL}/student/photo/${e.value}?${new Date().getTime()}`}
         alt={`students${e.value}`}
-        // onError={i => (i.target.src = `${DefaultPost}`)}
+        // onError={i => (i.target.src = `${DefaultPhoto}`)}
         className="img-thunbnail mb-3"
         style={{
           height: "3.5rem",
@@ -64,19 +65,21 @@ const Datatable = ({ datas, history }) => {
     </div>
   );
 
-  const handleChange = id => {
-    // const currentCategoryId = checkboxId.indexOf(id);
-    // console.log(currentCategoryId)
-    const newCheckedCategoryId = [...checkboxId];
-    // if currently checked was not already in checked state > push
-    // else pull/take off
-    // if (currentCategoryId === -1) {
+  const handleChange =  id => () => {
+    console.log("checked", checked)
+
+    const currentCategoryId = checked.indexOf(id);
+    const newCheckedCategoryId = [...checked];
+  
+    if (currentCategoryId === -1) {
       newCheckedCategoryId.push(id);
-    // } else {
-    //   newCheckedCategoryId.splice(currentCategoryId, 1);
-    // }
-    // console.log(newCheckedCategoryId)
-    setCheckboxId(newCheckedCategoryId);
+    } else {
+      newCheckedCategoryId.splice(currentCategoryId, 1);
+    }
+    console.log("newchecked", newCheckedCategoryId)
+    setCheked(newCheckedCategoryId);
+
+    console.log(checked)
 
   };
 
@@ -86,9 +89,7 @@ const Datatable = ({ datas, history }) => {
         type="checkbox"
         name="select"
         value={e.value}
-        onChange={e => {
-          handleChange(e.target.value)
-        }}
+        onChange={handleChange(e.value)}
       />
     </div>
   );
@@ -105,8 +106,7 @@ const Datatable = ({ datas, history }) => {
               <Filter />
             </div>
             <div className="col-xl-4 export">
-              {/* <CSVLink data={data}>CSV</CSVLink> */}
-              <span>Print</span>
+              <CSVLink data={datas}>Print</CSVLink>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ const Datatable = ({ datas, history }) => {
 
   return (
     <>
-      {console.log(checkboxId)}
+      {console.log(checked)}
       <button
         className="btn btn-info mb-4"
         onClick={() => {
