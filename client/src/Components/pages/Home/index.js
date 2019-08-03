@@ -47,8 +47,6 @@ const Home = () => {
       delete students.data[i]._id;
      }
 
-     console.log(students.data)
-
       setData({ ...data, rows: students.data });
     }
   };
