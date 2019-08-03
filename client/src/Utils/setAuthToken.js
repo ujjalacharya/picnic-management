@@ -1,5 +1,9 @@
 import axios from "axios";
-const API = 'https://picnic-mgt.herokuapp.com/api';
+let API = 'http://localhost:8000/api';
+
+if (process.env.NODE_ENV === "production") {
+  API = 'https://picnic-mgt.herokuapp.com/api';
+}
 
 const setAuthToken = token => {
   if (token) {
