@@ -3,7 +3,7 @@ import Layout from "../../core/Layout";
 import { Redirect } from "react-router-dom";
 import { addNewStudent } from "../../../Utils/Requests";
 
-const CreateProduct = () => {
+const CreateStudent = () => {
   const [values, setValues] = useState({
     name: "",
     grade: "",
@@ -182,4 +182,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
+export default CreateStudent;

@@ -27,6 +27,7 @@ exports.getAllStudents = async (req, res) => {
 exports.createStudent = (req, res, next) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
+  form.maxFileSize = 1 * 1024 * 1024;
   form.parse(req, async (err, fields, files) => {
     if (err) {
       return res.status(400).json({
@@ -56,6 +57,7 @@ exports.getStudentById = async (req, res) => {
 exports.updateStudentById = (req, res, next) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
+  form.maxFileSize = 1 * 1024 * 1024;
   form.parse(req, async (err, fields, files) => {
     if (err) {
       return res.status(400).json({

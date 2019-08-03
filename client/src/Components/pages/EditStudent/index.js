@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../../core/Layout";
 import { Redirect } from "react-router-dom";
-import { addNewStudent } from "../../../Utils/Requests";
+import { updateStudent, studentById } from "../../../Utils/Requests";
 
-const EditStudent = (props) => {
+const EditStudent = props => {
   const [values, setValues] = useState({
     name: "",
     grade: "",
@@ -14,7 +14,7 @@ const EditStudent = (props) => {
     address: "",
     error: "",
     success: false,
-    loading: false,
+    loading: true,
     formData: ""
   });
 
@@ -33,10 +33,17 @@ const EditStudent = (props) => {
   } = values;
 
   const init = async () => {
-    setValues({
-      ...values,
-      formData: new FormData()
+    const student = await studentById(props.match.params.id).catch(err => {
+      setValues({ ...values, error: err.response.data.error });
     });
+    if (student && student.status === 200) {
+      setValues({
+        ...values,
+        formData: new FormData(),
+        ...student.data,
+        loading: false
+      });
+    }
   };
 
   useEffect(() => {
@@ -44,7 +51,8 @@ const EditStudent = (props) => {
   }, []);
 
   const handleChange = name => event => {
-    const value = name === "profile_pic" ? event.target.files[0] : event.target.value;
+    const value =
+      name === "profile_pic" ? event.target.files[0] : event.target.value;
     formData.set(name, value);
     setValues({ ...values, error: "", [name]: value });
   };
@@ -53,11 +61,13 @@ const EditStudent = (props) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
 
-    const result = await addNewStudent(formData).catch(err => {
-      setValues({ ...values, error: err.response.data.error });
-    });
+    const result = await updateStudent(formData, props.match.params.id).catch(
+      err => {
+        setValues({ ...values, error: err.response.data.error });
+      }
+    );
     if (result && result.status === 200) {
-      console.log(result);
+      console.table(result.data);
       setValues({
         ...values,
         name: "",
@@ -166,7 +176,7 @@ const EditStudent = (props) => {
         />
       </div>
 
-      <button className="btn btn-outline-primary">Create Student</button>
+      <button className="btn btn-outline-primary">Update Student</button>
     </form>
   );
 

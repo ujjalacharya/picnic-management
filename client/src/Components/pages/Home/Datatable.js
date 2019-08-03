@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import Griddle, {
@@ -9,6 +9,7 @@ import Griddle, {
 import { removeStudent } from "../../../Utils/Requests";
 
 const Datatable = ({ datas, history }) => {
+  let [checkboxId, setCheckboxId] = useState([]);
   console.log(datas);
 
   let data = [];
@@ -20,6 +21,7 @@ const Datatable = ({ datas, history }) => {
     element.grade = ele.grade;
     element.email = ele.email;
     element.actions = ele._id;
+    element.selectStudents = ele._id;
     data.push(element);
   });
 
@@ -28,7 +30,7 @@ const Datatable = ({ datas, history }) => {
   const imageComponent = e => (
     <div>
       <img
-        src={`http://localhost:8000/api/student/photo/${e.value}`}
+        src={`http://localhost:8000/api/student/photo/${e.value}?${new Date().getTime()}`}
         alt={`students${e.value}`}
         // onError={i => (i.target.src = `${DefaultPost}`)}
         className="img-thunbnail mb-3"
@@ -49,14 +51,45 @@ const Datatable = ({ datas, history }) => {
       <button
         className="btn btn-danger"
         onClick={async () => {
-          const result = await removeStudent(e.value);
-          if (result.status === 200) {
-            window.location.reload();
+          if(window.confirm("Are you sure?")){
+            const result = await removeStudent(e.value);
+            if (result.status === 200) {
+              window.location.reload();
+            }
           }
         }}
       >
         Delete
       </button>
+    </div>
+  );
+
+  const handleChange = id => {
+    // const currentCategoryId = checkboxId.indexOf(id);
+    // console.log(currentCategoryId)
+    const newCheckedCategoryId = [...checkboxId];
+    // if currently checked was not already in checked state > push
+    // else pull/take off
+    // if (currentCategoryId === -1) {
+      newCheckedCategoryId.push(id);
+    // } else {
+    //   newCheckedCategoryId.splice(currentCategoryId, 1);
+    // }
+    // console.log(newCheckedCategoryId)
+    setCheckboxId(newCheckedCategoryId);
+
+  };
+
+  const selectStudentsComponent = e => (
+    <div>
+      <input
+        type="checkbox"
+        name="select"
+        value={e.value}
+        onChange={e => {
+          handleChange(e.target.value)
+        }}
+      />
     </div>
   );
 
@@ -94,6 +127,7 @@ const Datatable = ({ datas, history }) => {
 
   return (
     <>
+      {console.log(checkboxId)}
       <button
         className="btn btn-info mb-4"
         onClick={() => {
@@ -124,6 +158,11 @@ const Datatable = ({ datas, history }) => {
             id="actions"
             title="Actions"
             customComponent={e => actionComponent(e)}
+          />
+          <ColumnDefinition
+            id="selectStudents"
+            title="Select Students"
+            customComponent={e => selectStudentsComponent(e)}
           />
         </RowDefinition>
       </Griddle>

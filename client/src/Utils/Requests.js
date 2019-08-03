@@ -60,5 +60,9 @@ export const getStudents = () => axios.get("/student");
 
 export const addNewStudent = student => axios.post("/student", student);
 
+export const updateStudent = (student, id) => axios.put("/student/"+id, student);
+
 export const removeStudent = id => axios.delete("/student/"+id);
+
+export const studentById = id => axios.get("/student/"+id);
 
