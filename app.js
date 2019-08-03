@@ -3,6 +3,7 @@ const expressValidator = require("express-validator");
 const express = require("express");
 require("express-async-errors");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 const app = express();
 
@@ -26,6 +27,14 @@ app.use(function(err, req, res, next) {
     .status(500)
     .json({ message: err._message || err.errmsg || "Something went wrong" });
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const port = process.env.PORT || 8000;
 

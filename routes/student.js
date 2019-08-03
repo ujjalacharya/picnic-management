@@ -28,7 +28,6 @@ router
   .put(requireSignin, updateStudentById)
   .delete(requireSignin, deleteStudentById);
 
-// any route containing :postId, our app will first execute postByID()
 router.param("studentId", studentById);
 
 module.exports = router;

@@ -30,7 +30,7 @@ const Datatable = ({ datas, history }) => {
   const imageComponent = e => (
     <div>
       <img
-        src={`http://localhost:8000/api/student/photo/${e.value}?${new Date().getTime()}`}
+        src={`${process.env.REACT_APP_API_URL}/student/photo/${e.value}?${new Date().getTime()}`}
         alt={`students${e.value}`}
         // onError={i => (i.target.src = `${DefaultPost}`)}
         className="img-thunbnail mb-3"
