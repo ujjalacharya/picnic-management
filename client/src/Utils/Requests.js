@@ -60,3 +60,5 @@ export const getStudents = () => axios.get("/student");
 
 export const addNewStudent = student => axios.post("/student", student);
 
+export const removeStudent = id => axios.delete("/student/"+id);
+

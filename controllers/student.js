@@ -10,7 +10,7 @@ exports.studentById = async (req, res, next, id) => {
      error: "student not found"
    });
  }
- student.profile_pic = undefined;
+//  student.profile_pic = undefined;
  req.student = student; // adds student object in req with student info
  next();
 };
@@ -90,5 +90,6 @@ exports.deleteStudentById = async (req, res) => {
 
 exports.photo = (req, res, next) => {
   res.set("Content-Type", req.student.profile_pic.contentType);
+  console.log(req.student)
   return res.send(req.student.profile_pic.data);
 };

@@ -4,6 +4,7 @@ import SignIn from "../Components/pages/SiginIn";
 import SignUp from "../Components/pages/SignUp";
 import Home from "../Components/pages/Home";
 import NewStudent from "../Components/pages/NewStudent";
+import EditStudent from "../Components/pages/EditStudent";
 import PrivateRoute from "./PrivateRoute";
 
 const MainRouter = () => (
@@ -12,6 +13,7 @@ const MainRouter = () => (
     <Route path="/signin" exact component={SignIn} />
     <Route path="/signup" exact component={SignUp} />
     <Route path="/new-student" exact component={NewStudent} />
+    <Route path="/edit-student/:id" exact component={EditStudent} />
   </Switch>
 );
 
