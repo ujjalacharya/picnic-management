@@ -6,7 +6,7 @@ import { signIn, authenticate } from "../../../Utils/Requests";
 
 const SignIn = () => {
   const [state, setState] = useState({
-    email: "hari@hotmail.com",
+    email: "admin@ujjalacharya.com.np",
     password: "123456789",
     error: "",
     loading: false,
