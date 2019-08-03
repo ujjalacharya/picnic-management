@@ -1,75 +1,72 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { MDBDataTable } from "mdbreact";
+import { withRouter } from "react-router-dom";
 import Griddle, { plugins, RowDefinition, ColumnDefinition} from 'griddle-react'; 
 
-const Datatable = ({ data }) => {
-  console.log(data);
+const Datatable = ({ datas, history }) => {
+  console.log(datas);
 
-  var data = [
-    {
-      "id": 0,
-      "name": "Mayer Leonard",
-      "city": "Kapowsin",
-      "state": "Hawaii",
-      "country": "United Kingdom",
-      "company": "Ovolo",
-      "favoriteNumber": 7
-    },
-    {
-      "id": 1,
-      "name": "Ujjwal Acharya",
-      "city": "Kathmandu",
-      "state": "Kathmandu",
-      "country": "Nepal",
-      "company": "My Company",
-      "favoriteNumber": 10
-    }
-  ];
+  let data = [];
+  datas.map(ele => {
+    let element = {};
+    element.image = ele._id;
+
+    element.name = ele.name;
+    element.grade = ele.grade;
+    element.email = ele.email;
+    data.push(element);
+  })
+
+  console.log(data)
+
+  const imageComponent = (e) => (
+    
+    <div>
+
+      <img
+          src={`http://localhost:8000/api/student/photo/${
+            e.value
+          }`}
+          alt={`students${e.value}`}
+          // onError={i => (i.target.src = `${DefaultPost}`)}
+          className="img-thunbnail mb-3"
+          style={{
+            height: "3.5rem",
+            width: "10%%",
+            objectFit: "cover"
+          }}
+        />
+    </div>
+  )
+
   const actionComponent = (e) => (
     <div>
       <button>abcd</button>
-          {/* {
-              this.state.alldata.properties[0].slug === '' ? <div><span></span></div> : (
-                  <button className="btn btn-primary edit" id="form-edit" type="button" data-toggle="tooltip" data-placement="right" title="Edit">
-                      <Link to={"/edit-property-form/"+e.value._root.entries[1][1]+"/approved"} target="_blank">
-                          <i className="ion-edit" />
-                      </Link>
-                  </button>
-              ) 
-          }
-          {
-              this.state.alldata.properties[0].slug === '' ? '' : (
-                  <button className="btn btn-danger delete" type="button" onClick={()=>this.deleteProperty(e.value._root.entries[0][1])} data-toggle="tooltip" data-placement="right" title="Delete">
-                      <i className="ion-android-delete" />
-                  </button>
-              )
-          } */}
-      </div>
-  );
 
-  const NewLayout = ({ Table, Filter, Pagination}) => (
-    <div style={{width:'98%'}}>
-        <div className="row search-export">
-            <div className="col-xl-6" style={{paddingLeft:0}}>  
-                <h2>All Students</h2>
-            </div>
-            <div className="col-xl-6" style={{paddingRight:0}}>
-                <div className="row">
-                    <div className="col-xl-8">
-                        <Filter />
-                    </div>
-                    <div className="col-xl-4 export">
-                        {/* <CSVLink data={data}>CSV</CSVLink> */}
-                        <span>Print</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <Table />
-        <Pagination />
-    </div>
-);
+      </div>
+    );
+
+    const NewLayout = ({ Table, Filter, Pagination}) => (
+      <div style={{width:'98%'}}>
+          <div className="row search-export">
+              <div className="col-xl-6" style={{paddingLeft:0}}>  
+                  <h2>All Students</h2>
+              </div>
+              <div className="col-xl-6" style={{paddingRight:0}}>
+                  <div className="row">
+                      <div className="col-xl-8">
+                          <Filter />
+                      </div>
+                      <div className="col-xl-4 export">
+                          {/* <CSVLink data={data}>CSV</CSVLink> */}
+                          <span>Print</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <Table />
+          <Pagination />
+      </div>
+    );
 
 
   const styleConfig = {
@@ -83,10 +80,11 @@ const Datatable = ({ data }) => {
 
   return (
     <>
-      <button className="btn btn-info mb-4">
-        <Link to="/new-student">Add New Student</Link>
+      <button className="btn btn-info mb-4" onClick={()=>{
+        history.push("/new-student")
+      }}>
+        Add New Student
       </button>
-      {/* <MDBDataTable striped bordered hover data={data} /> */}
       <Griddle
           data={data}
           plugins={[plugins.LocalPlugin]}
@@ -97,13 +95,10 @@ const Datatable = ({ data }) => {
           styleConfig={styleConfig}
       >
           <RowDefinition>
-            <ColumnDefinition id="id" title="Id"/>
+            <ColumnDefinition id="image" title="Photo" customComponent={(e) =>imageComponent(e)}/>
             <ColumnDefinition id="name" title="Name"/>
-            <ColumnDefinition id="city" title="City"/>
-            <ColumnDefinition id="state" title="State"/>
-            <ColumnDefinition id="country" title="Country"/>
-            <ColumnDefinition id="company" title="Company"/>
-            <ColumnDefinition id="favoriteNumber" title="Favorite Number"/>
+            <ColumnDefinition id="email" title="Email"/>
+            <ColumnDefinition id="grade" title="Class"/>
             <ColumnDefinition id="actions" title="Actions" customComponent={(e) =>actionComponent(e)} />
           </RowDefinition>
       </Griddle>
@@ -112,4 +107,4 @@ const Datatable = ({ data }) => {
   );
 };
 
-export default Datatable;
+export default withRouter(Datatable);

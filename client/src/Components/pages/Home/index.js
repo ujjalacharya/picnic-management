@@ -4,29 +4,7 @@ import { getUsername, getStudents } from "../../../Utils/Requests";
 import Datatable from "./Datatable";
 
 const Home = () => {
-  const [data, setData] = useState({
-    columns: [
-     {
-      label: "Name",
-      field: "name",
-      sort: "asc",
-      width: 150
-    }, 
-     {
-      label: "Email",
-      field: "email",
-      sort: "asc",
-      width: 200
-    }, 
-     {
-      label: "Class",
-      field: "class",
-      sort: "asc",
-      width: 100
-    }, 
-    ],
-    rows: []
-  });
+  const [data, setData] = useState([]);
 
   const tableRows = useState([])
 
@@ -43,11 +21,8 @@ const Home = () => {
 
     if (students && students.status === 200) {
 
-     for(let i=0; i<students.data.length; i++){
-      delete students.data[i]._id;
-     }
 
-      setData({ ...data, rows: students.data });
+      setData(students.data);
     }
   };
 
@@ -55,7 +30,7 @@ const Home = () => {
 
   return (
     <Layout title={`Howdy! ${getUsername()}`}>
-      {error ? showError() : <Datatable data={data} />}
+      {error ? showError() : <Datatable datas={data} />}
     </Layout>
   );
 };
